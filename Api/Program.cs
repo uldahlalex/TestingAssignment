@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PgCtx;
 using Service;
+using Service.Models;
 
 namespace Api;
 

@@ -37,13 +37,9 @@ public class ApiTestBase : WebApplicationFactory<Program>
         
         var user = new Libraryuser()
         {
-            Address = "",
             CreatedAt = DateTime.UtcNow,
             Email = "",
             Phone = "123",
-            FirstName = "",
-            IsActive = true,
-            LastName = ""
         };
         ctx.Libraryusers.Add(user);
         ctx.SaveChanges();

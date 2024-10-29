@@ -26,14 +26,6 @@ public partial class LibraryContext : DbContext
 
             entity.ToTable("books", "library");
 
-            entity.HasIndex(e => e.Isbn, "books_isbn_key").IsUnique();
-
-            entity.HasIndex(e => e.Author, "idx_books_author");
-
-            entity.HasIndex(e => e.Isbn, "idx_books_isbn");
-
-            entity.HasIndex(e => e.Title, "idx_books_title");
-
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Author)
                 .HasMaxLength(255)
@@ -41,23 +33,9 @@ public partial class LibraryContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Format)
-                .HasMaxLength(50)
-                .HasColumnName("format");
             entity.Property(e => e.Genre)
                 .HasMaxLength(50)
                 .HasColumnName("genre");
-            entity.Property(e => e.Isbn)
-                .HasMaxLength(13)
-                .HasColumnName("isbn");
-            entity.Property(e => e.Language)
-                .HasMaxLength(50)
-                .HasDefaultValueSql("'English'::character varying")
-                .HasColumnName("language");
-            entity.Property(e => e.Publisher)
-                .HasMaxLength(255)
-                .HasColumnName("publisher");
             entity.Property(e => e.Title)
                 .HasMaxLength(255)
                 .HasColumnName("title");
@@ -69,27 +47,18 @@ public partial class LibraryContext : DbContext
 
             entity.ToTable("libraryuser", "library");
 
-            entity.HasIndex(e => e.Email, "idx_libraryuser_email");
-
             entity.HasIndex(e => e.Email, "libraryuser_email_key").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnName("created_at");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .HasColumnName("email");
-            entity.Property(e => e.FirstName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(100)
-                .HasColumnName("first_name");
-            entity.Property(e => e.IsActive)
-                .HasDefaultValue(true)
-                .HasColumnName("is_active");
-            entity.Property(e => e.LastName)
-                .HasMaxLength(100)
-                .HasColumnName("last_name");
+                .HasColumnName("name");
             entity.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .HasColumnName("phone");
@@ -100,12 +69,6 @@ public partial class LibraryContext : DbContext
             entity.HasKey(e => e.Id).HasName("book_loans_pkey");
 
             entity.ToTable("loans", "library");
-
-            entity.HasIndex(e => e.BookId, "idx_book_loans_book_id");
-
-            entity.HasIndex(e => e.ReturnDate, "idx_book_loans_return_date");
-
-            entity.HasIndex(e => e.UserId, "idx_book_loans_user_id");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BookId).HasColumnName("book_id");
