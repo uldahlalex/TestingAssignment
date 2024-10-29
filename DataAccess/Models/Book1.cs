@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DataAccess.Models;
 
-public partial class Book
+public partial class Book1
 {
     public int Id { get; set; }
 
@@ -15,25 +15,15 @@ public partial class Book
 
     public string? Publisher { get; set; }
 
-    public DateOnly? PublicationDate { get; set; }
-
     public string? Genre { get; set; }
 
     public string? Description { get; set; }
-
-    public int? PageCount { get; set; }
 
     public string? Language { get; set; }
 
     public string? Format { get; set; }
 
-    public decimal? Price { get; set; }
-
-    public int? StockQuantity { get; set; }
-
-    public bool? IsAvailable { get; set; }
-
     public DateTime? CreatedAt { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public virtual ICollection<Loan> Loans { get; set; } = new List<Loan>();
 }

@@ -6,4 +6,7 @@ public class AppOptions
 {
     [Required] [MinLength(1)] public string Database { get; set; } = null!;
     [Required] public bool RunInTestContainer { get; set; } = false;
+    [Required] public string JwtKey { get; set; } = null!;
+    [Required] public string Issuer { get; set; } = null!;
+    [Required] public string Audience { get; set; } = null!;
 }
