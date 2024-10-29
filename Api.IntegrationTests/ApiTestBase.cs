@@ -1,21 +1,52 @@
-using Microsoft.AspNetCore.Hosting;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PgCtx;
+using LibraryContext = DataAccess.LibraryContext;
 
 namespace Api.IntegrationTests;
 
-public class UnitTestBase : WebApplicationFactory<Program> 
+public class ApiTestBase : WebApplicationFactory<Program>
 {
-    
-    
-    
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    public PgCtxSetup<LibraryContext> PgCtxSetup;
+
+    public ApiTestBase()
     {
-        
+        PgCtxSetup = new PgCtxSetup<LibraryContext>();
+        Scope = base.Services.CreateScope();
+        ApplicationServices = Scope.ServiceProvider;
+        Client = CreateClient();
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserJwt);
     }
 
-    public UnitTestBase()
+    public HttpClient Client { get; set; }
+
+    public string UserJwt { get; set; } =
+        "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.0Bk7pFvb2zgnomw3gUNpoCNq9fEhAD-qrzD38eOjo4PN0PZwiZbcssGRuslR0KG9umsY1lB0MFCH54eRSficnQ";
+
+    public IServiceScope Scope { get; set; }
+    public IServiceProvider ApplicationServices { get; set; }
+
+
+    protected override IHost CreateHost(IHostBuilder builder)
     {
-        
+        builder.ConfigureServices(services =>
+        {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<LibraryContext>));
+
+            if (descriptor != null) services.Remove(descriptor);
+
+            services.AddDbContext<LibraryContext>(opt =>
+            {
+                opt.UseNpgsql(PgCtxSetup._postgres.GetConnectionString());
+                opt.EnableSensitiveDataLogging(false);
+                opt.LogTo(_ => { });
+            });
+        });
+        return base.CreateHost(builder);
     }
 }

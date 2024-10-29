@@ -14,7 +14,7 @@ public class LibraryController(ILibraryService service) : ControllerBase
     {
         throw new NotImplementedException();
     }
-    
+
     [Route("[action]")]
     [HttpPost]
     public ActionResult<Book> Post([FromBody] CreateBookDto book)
@@ -22,5 +22,4 @@ public class LibraryController(ILibraryService service) : ControllerBase
         var newBook = service.AddBook(book);
         return Ok(newBook);
     }
-    
 }

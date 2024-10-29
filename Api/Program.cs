@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PgCtx;
 using Service;
-using service.Types;
 
 namespace Api;
 
@@ -35,10 +34,8 @@ public class Program
         var appOptions = builder.Configuration.GetSection(nameof(AppOptions)).Get<AppOptions>();
         var pg = new PgCtxSetup<LibraryContext>();
         if (appOptions?.RunInTestContainer == true)
-        {
             builder.Configuration[nameof(AppOptions) + ":" + nameof(AppOptions.Database)] =
                 pg._postgres.GetConnectionString();
-        }
 
         builder.Services.AddDbContext<LibraryContext>((serviceProvider, options) =>
         {
@@ -47,6 +44,8 @@ public class Program
         });
         builder.Services.AddScoped<ILibraryService, LibraryService>();
         builder.Services.AddControllers();
+        builder.Services.AddOpenApiDocument();
+
         var app = builder.Build();
         app.UseCors(builder =>
         {
@@ -59,10 +58,12 @@ public class Program
         {
             var ctx = scope.ServiceProvider.GetRequiredService<LibraryContext>();
             ctx.Database.EnsureCreated();
-            //get SQL for creating the database
             Console.WriteLine(ctx.Database.GenerateCreateScript());
             ctx.Books.ToList();
         }
+
+        app.UseOpenApi();
+        app.UseSwaggerUi();
 
         app.Run();
     }

@@ -4,7 +4,6 @@ namespace Service;
 
 public class CreateBookDto
 {
-
     public string Isbn { get; set; } = null!;
 
     public string Title { get; set; } = null!;
@@ -33,7 +32,7 @@ public class CreateBookDto
 
     public Book ToBook()
     {
-        var book = new Book()
+        var book = new Book
         {
             Isbn = Isbn,
             Title = Title,
