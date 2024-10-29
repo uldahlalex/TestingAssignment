@@ -10,7 +10,6 @@ namespace Api.Controllers;
 public class LibraryController(ILibraryService service) : ControllerBase
 {
     [Route("[action]")]
-    [Authorize]
     [HttpGet]
     public ActionResult<IEnumerable<Book>> Get()
     {
@@ -18,7 +17,6 @@ public class LibraryController(ILibraryService service) : ControllerBase
     }
 
     [Route("[action]")]
-    [Authorize]
     [HttpPost]
     public ActionResult<Book> Post([FromBody] CreateBookDto book)
     {

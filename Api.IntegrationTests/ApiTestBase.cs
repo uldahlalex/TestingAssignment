@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,7 @@ public class ApiTestBase : WebApplicationFactory<Program>
 {
     public PgCtxSetup<LibraryContext> PgCtxSetup;
     public HttpClient Client { get; set; }
-
+    
     public string UserJwt { get; set; } =
         "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.0Bk7pFvb2zgnomw3gUNpoCNq9fEhAD-qrzD38eOjo4PN0PZwiZbcssGRuslR0KG9umsY1lB0MFCH54eRSficnQ";
 
@@ -23,9 +24,30 @@ public class ApiTestBase : WebApplicationFactory<Program>
         PgCtxSetup = new PgCtxSetup<LibraryContext>();
         ApplicationServices = base.Services.CreateScope().ServiceProvider;
         Client = CreateClient();
+        //If you have enabled authentication, you can attach a default JWT for the http client
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserJwt);
     }
 
+    /// <summary>
+    /// Data that will be populated before each test
+    /// </summary>
+    public async Task Seed()
+    {
+        var ctx = ApplicationServices.GetRequiredService<LibraryContext>();
+        
+        var user = new Libraryuser()
+        {
+            Address = "",
+            CreatedAt = DateTime.UtcNow,
+            Email = "",
+            Phone = "123",
+            FirstName = "",
+            IsActive = true,
+            LastName = ""
+        };
+        ctx.Libraryusers.Add(user);
+        ctx.SaveChanges();
+    }
 
 
 

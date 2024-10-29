@@ -38,17 +38,11 @@ public class CreateBookDto
             Title = Title,
             Author = Author,
             Publisher = Publisher,
-            PublicationDate = PublicationDate,
             Genre = Genre,
             Description = Description,
-            PageCount = PageCount,
             Language = Language,
             Format = Format,
-            Price = Price,
-            StockQuantity = StockQuantity,
-            IsAvailable = IsAvailable,
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
         };
         return book;
     }

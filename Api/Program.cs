@@ -1,13 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using DataAccess;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using NSwag;
-using NSwag.Generation.Processors.Security;
 using PgCtx;
 using Service;
 
@@ -51,41 +45,7 @@ public class Program
 
         builder.Services.AddScoped<ILibraryService, LibraryService>();
         builder.Services.AddControllers();
-        builder.Services.AddOpenApiDocument(configuration =>
-        {
-            configuration.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-            {
-                Type = OpenApiSecuritySchemeType.ApiKey,
-                Name = "Authorization",
-                In = OpenApiSecurityApiKeyLocation.Header,
-                Description = "Type into the textbox: Bearer {your JWT token}."
-            });
-
-            configuration.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-        });
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            var key = Encoding.UTF8.GetBytes(appOptions.JwtKey);
-    
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = appOptions.Issuer,
-                ValidAudience = appOptions.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ClockSkew = TimeSpan.Zero,
-                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha512 }
-            };
-        });
-        Console.WriteLine(JwtHelper.GenerateToken("test", appOptions.JwtKey, appOptions.Issuer, appOptions.Audience));
-        builder.Services.AddAuthorization();
+        builder.Services.AddOpenApiDocument();
 
         var app = builder.Build();
         app.UseCors(builder =>
@@ -94,8 +54,7 @@ public class Program
             builder.AllowAnyMethod();
             builder.AllowAnyHeader();
         });
-        app.UseAuthentication();
-        app.UseAuthorization();
+
         app.MapControllers();
         using (var scope = app.Services.CreateScope())
         {

@@ -1,3 +1,5 @@
+drop schema if exists public cascade;
+create schema public;
 drop schema if exists library cascade;
 create schema if not exists library;
 

@@ -17,7 +17,7 @@ public partial class Loan
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual Book1 Book { get; set; } = null!;
+    public virtual Book Book { get; set; } = null!;
 
     public virtual Libraryuser User { get; set; } = null!;
 }
