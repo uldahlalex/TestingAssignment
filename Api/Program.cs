@@ -59,6 +59,8 @@ public class Program
         {
             var ctx = scope.ServiceProvider.GetRequiredService<LibraryContext>();
             ctx.Database.EnsureCreated();
+            //get SQL for creating the database
+            Console.WriteLine(ctx.Database.GenerateCreateScript());
             ctx.Books.ToList();
         }
 

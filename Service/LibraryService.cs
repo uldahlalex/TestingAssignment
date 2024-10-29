@@ -1,11 +1,20 @@
+using DataAccess;
+using DataAccess.Models;
+
 namespace Service;
 
 public interface ILibraryService
 {
-    
+    Book AddBook(CreateBookDto dto);
 }
 
-public class LibraryService : ILibraryService
+public class LibraryService(LibraryContext context) : ILibraryService
 {
-    
+    public Book AddBook(CreateBookDto dto)
+    {
+        var book = dto.ToBook();
+        context.Books.Add(book);
+        context.SaveChanges();
+        return book;
+    }
 }
