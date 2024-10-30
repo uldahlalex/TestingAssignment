@@ -26,6 +26,7 @@ public class ApiTestBase : WebApplicationFactory<Program>
         Client = CreateClient();
         //If you have enabled authentication, you can attach a default JWT for the http client
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserJwt);
+        Seed();
     }
 
     /// <summary>
@@ -38,10 +39,33 @@ public class ApiTestBase : WebApplicationFactory<Program>
         var user = new Libraryuser()
         {
             CreatedAt = DateTime.UtcNow,
-            Email = "",
+            Email = "Bob@Bob.com",
             Phone = "123",
+            Name = "Bob"
         };
         ctx.Libraryusers.Add(user);
+        ctx.SaveChanges();
+        
+        var book = new Book()
+        {
+            Author = "Author",
+            CreatedAt = DateTime.UtcNow,
+            Genre = "Genre",
+            Title = "Title",
+        };
+        ctx.Books.Add(book);
+        ctx.SaveChanges();
+        
+        var loan = new Loan()
+        {
+            BookId = book.Id,
+            CreatedAt = DateTime.UtcNow,
+            IsReturned = false,
+            ReturnDate = DateTime.UtcNow.AddDays(7),
+            UserId = user.Id,
+            
+        };
+        ctx.Loans.Add(loan);
         ctx.SaveChanges();
     }
 

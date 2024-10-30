@@ -9,10 +9,14 @@ public class BooksTests : ApiTestBase
     {
         var dto = new CreateBookDto()
         {
-            Author = "Bob",
-            
+            Author = "A",
+            Genre = "A",
+            Title = "A"
         };
         var result = (await new LibraryClient(Client).PostAsync(dto)).Result;
         Assert.Equivalent(result.Author, dto.Author);
+        Assert.Equivalent(result.Genre, dto.Genre);
+        Assert.Equivalent(result.Title, dto.Title);
+        Assert.NotEqual(0, result.Id);
     }
 }

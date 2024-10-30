@@ -11,10 +11,11 @@ namespace Api.Controllers;
 public class LibraryController(ILibraryService service) : ControllerBase
 {
     [Route("[action]")]
-    [HttpGet]
-    public ActionResult<IEnumerable<Book>> Get()
+    [HttpPost]
+    public ActionResult<LoanResponse> Loan([FromBody] LoanBookDto loan)
     {
-        throw new NotImplementedException();
+        var result = service.Loan(loan);
+        return Ok(result);
     }
 
     [Route("[action]")]
