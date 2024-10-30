@@ -9,7 +9,8 @@ public class BooksTests : ApiTestBase
     {
         var dto = new CreateBookDto()
         {
-            Author = "Bob"
+            Author = "Bob",
+            
         };
         var result = (await new LibraryClient(Client).PostAsync(dto)).Result;
         Assert.Equivalent(result.Author, dto.Author);
