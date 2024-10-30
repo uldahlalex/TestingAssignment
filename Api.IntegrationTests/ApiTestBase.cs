@@ -11,6 +11,8 @@ namespace Api.IntegrationTests;
 
 public class ApiTestBase : WebApplicationFactory<Program>
 {
+    
+    #region properties
     public PgCtxSetup<LibraryContext> PgCtxSetup;
     public HttpClient Client { get; set; }
     
@@ -18,6 +20,7 @@ public class ApiTestBase : WebApplicationFactory<Program>
         "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.0Bk7pFvb2zgnomw3gUNpoCNq9fEhAD-qrzD38eOjo4PN0PZwiZbcssGRuslR0KG9umsY1lB0MFCH54eRSficnQ";
 
     public IServiceProvider ApplicationServices { get; set; }
+    #endregion
 
     public ApiTestBase()
     {

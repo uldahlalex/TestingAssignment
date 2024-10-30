@@ -1,3 +1,5 @@
+using System.Net.Http.Json;
+using System.Text.Json;
 using Generated;
 
 namespace Api.IntegrationTests.Tests;
@@ -13,7 +15,9 @@ public class BooksTests : ApiTestBase
             Genre = "A",
             Title = "A"
         };
-        var result = (await new LibraryClient(Client).PostAsync(dto)).Result;
+        //var result = (await new LibraryClient(Client).PostAsync(dto)).Result;
+        var response = await Client.PostAsJsonAsync("api/libary/...", dto);
+        var result = JsonSerializer.Deserialize<Book>(await response.Content.ReadAsStringAsync());
         Assert.Equivalent(result.Author, dto.Author);
         Assert.Equivalent(result.Genre, dto.Genre);
         Assert.Equivalent(result.Title, dto.Title);

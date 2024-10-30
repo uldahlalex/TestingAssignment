@@ -1,3 +1,3 @@
 //Uncomment below line to run tests sequentially
-//[assembly: CollectionBehavior(DisableTestParallelization = true)]
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
