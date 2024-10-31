@@ -11,7 +11,7 @@ public class CreateBookDto
     [MinLength(1)]
     public string Author { get; set; } = null!;
 
-    [MaxLength(1)]
+    [MinLength(1)]
     public string? Genre { get; set; }
 
 

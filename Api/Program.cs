@@ -55,7 +55,7 @@ public class Program
             builder.AllowAnyMethod();
             builder.AllowAnyHeader();
         });
-
+        
         app.MapControllers();
         using (var scope = app.Services.CreateScope())
         {
